@@ -50,6 +50,9 @@ public class BulbsFragment extends Fragment {
                 item.onClick(v);
             }
         });
+
+        updateData();
+
         return v;
     }
 
@@ -57,18 +60,20 @@ public class BulbsFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    public void updateData(HueManager hueManager) {
-        PHBridge phBridge = hueManager.getPHBridge();
-        List<PHLight> phLights = phBridge.getResourceCache().getAllLights();
+    public void updateData() {
+        PHBridge phBridge = HueManager.getPHBridge();
+        if (mAdapter != null && phBridge != null) {
+            List<PHLight> phLights = phBridge.getResourceCache().getAllLights();
 
-        List<ListItem> data = new ArrayList<>();
-        for (PHLight phLight : phLights) {
-            String identifier = phLight.getIdentifier();
-            data.add(new BulbItem(identifier));
+            List<ListItem> data = new ArrayList<>();
+            for (PHLight phLight : phLights) {
+                String identifier = phLight.getIdentifier();
+                data.add(new BulbItem(identifier));
+            }
+
+            mAdapter.clear();
+            mAdapter.addAll(data);
         }
-
-        mAdapter.clear();
-        mAdapter.addAll(data);
     }
 
     private class BulbItem extends ListItem {
@@ -76,6 +81,8 @@ public class BulbsFragment extends Fragment {
 
         private String mName;
         private int mState;
+
+        private boolean mColorIcon = false;
 
         public BulbItem(String identifier) {
             mIdentifier = identifier;
@@ -115,9 +122,11 @@ public class BulbsFragment extends Fragment {
                 image.setColorFilter(v.getResources().getColor(R.color.colorDisable));
             } else if (mState == 1) {   // on
                 image.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_light_on));
-//                int color = v.getResources().getColor(R.color.colorOn);
                 float[] hsv = getLightColor(lightState);
                 int color = Color.HSVToColor(hsv);
+                if (!mColorIcon) {
+                    color = v.getResources().getColor(R.color.colorOn);
+                }
                 image.setColorFilter(color);
                 itemState.setText(String.format("On (%.0f%%)", hsv[2]*100));
             } else {        // off

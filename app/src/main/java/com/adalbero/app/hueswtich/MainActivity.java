@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.philips.lighting.hue.sdk.PHMessageType;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         mBulbsFragment = new BulbsFragment();
         mGroupsFragment = new GroupsFragment();
 
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
 
         mHueManager = new HueManager(this) {
@@ -48,9 +49,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onUpdateCache(List<Integer> list) {
+            public void onUpdateCache(final List<Integer> list) {
                 super.onUpdateCache(list);
-                updateCache(list);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateCache(list);
+                    }
+                });
             }
         };
 
@@ -60,18 +66,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateCache(List<Integer> list) {
+        Log.d("MyApp", "MainActivity.updateCache: ");
         if (list.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mBulbsFragment.updateCache();
-                }
-            });
+            Log.d("MyApp", "MainActivity.updateCache: Light");
+            mBulbsFragment.updateCache();
+            mGroupsFragment.updateCache();
+        }
+
+        if (list.contains(PHMessageType.GROUPS_CACHE_UPDATED)) {
+            Log.d("MyApp", "MainActivity.updateCache: Group");
+            mGroupsFragment.updateCache();
         }
     }
 
     private void updateData() {
-        mBulbsFragment.updateData(mHueManager);
+        mBulbsFragment.updateData();
+        mGroupsFragment.updateData();
     }
 
     @Override

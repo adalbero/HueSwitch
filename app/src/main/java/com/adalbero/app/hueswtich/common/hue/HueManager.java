@@ -77,7 +77,7 @@ public class HueManager {
     }
 
     public void onConnect() {
-        Log.d("MyApp", "HueManager.onConnect: ");
+//        Log.d("MyApp", "HueManager.onConnect: ");
     }
 
     public void onUpdateCache(List<Integer> list) {
@@ -85,7 +85,7 @@ public class HueManager {
     }
 
     public void connect(PHAccessPoint accessPoint) {
-        Log.d("MyApp", "HueManager.connect: ");
+//        Log.d("MyApp", "HueManager.connect: ");
 
         PHBridge connectedBridge = phHueSDK.getSelectedBridge();
 
@@ -106,8 +106,8 @@ public class HueManager {
         phHueSDK.disableAllHeartbeat();
     }
 
-    public PHBridge getPHBridge() {
-        return phHueSDK.getSelectedBridge();
+    public static PHBridge getPHBridge() {
+        return PHHueSDK.getInstance().getSelectedBridge();
     }
 
 
