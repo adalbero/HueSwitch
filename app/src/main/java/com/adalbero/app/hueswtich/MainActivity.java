@@ -8,10 +8,20 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.adalbero.app.hueswtich.common.hue.HueManager;
+import com.philips.lighting.hue.sdk.PHMessageType;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    private HueManager mHueManager;
+
+    private HomeFragment mHomeFragment;
+    private BulbsFragment mBulbsFragment;
+    private GroupsFragment mGroupsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +33,51 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mHomeFragment = new HomeFragment();
+        mBulbsFragment = new BulbsFragment();
+        mGroupsFragment = new GroupsFragment();
+
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
+
+        mHueManager = new HueManager(this) {
+            @Override
+            public void onConnect() {
+                super.onConnect();
+                updateData();
+            }
+
+            @Override
+            public void onUpdateCache(List<Integer> list) {
+                super.onUpdateCache(list);
+                updateCache(list);
+            }
+        };
+
+        if (mHueManager.tryToConnect(true)) {
+            updateData();
+        }
+    }
+
+    private void updateCache(List<Integer> list) {
+        if (list.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mBulbsFragment.updateCache();
+                }
+            });
+        }
+    }
+
+    private void updateData() {
+        mBulbsFragment.updateData(mHueManager);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHueManager.finalize();
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -42,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
                 case PAGE_HOME:
                 default:
-                    return new HomeFragment();
+                    return mHomeFragment;
                 case PAGE_BULBS:
-                    return new BulbsFragment();
+                    return mBulbsFragment;
                 case PAGE_GROUPS:
-                    return new GroupsFragment();
+                    return mGroupsFragment;
             }
         }
 

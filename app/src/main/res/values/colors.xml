@@ -3,4 +3,10 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorBackground">#303030</color>
+    <color name="colorDialog">#424242</color>
+
+    <color name="colorOn">#00FF00</color>
+    <color name="colorOff">#a0a0a0</color>
+    <color name="colorDisable">#a0a0a0</color>
 </resources>
