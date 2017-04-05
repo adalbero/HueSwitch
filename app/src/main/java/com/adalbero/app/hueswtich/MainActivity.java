@@ -66,15 +66,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateCache(List<Integer> list) {
-        Log.d("MyApp", "MainActivity.updateCache: ");
+//        Log.d("MyApp", "MainActivity.updateCache: ");
         if (list.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
-            Log.d("MyApp", "MainActivity.updateCache: Light");
+//            Log.d("MyApp", "MainActivity.updateCache: Light");
             mBulbsFragment.updateCache();
             mGroupsFragment.updateCache();
         }
 
         if (list.contains(PHMessageType.GROUPS_CACHE_UPDATED)) {
-            Log.d("MyApp", "MainActivity.updateCache: Group");
+//            Log.d("MyApp", "MainActivity.updateCache: Group");
             mGroupsFragment.updateCache();
         }
     }

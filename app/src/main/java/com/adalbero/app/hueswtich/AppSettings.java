@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.common;
+package com.adalbero.app.hueswtich;
 
 /**
  * Created by Adalbero on 05/04/2017.

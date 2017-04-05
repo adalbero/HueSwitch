@@ -67,6 +67,7 @@ public class GroupsFragment extends Fragment {
 
     public void updateData() {
         PHBridge phBridge = HueManager.getPHBridge();
+//        Log.d("MyApp", "GroupsFragment.updateData: mAdapter:" + (mAdapter != null) + " bridge:" + (phBridge != null));
         if (mAdapter != null && phBridge != null) {
             List<PHGroup> groups = phBridge.getResourceCache().getAllGroups();
 

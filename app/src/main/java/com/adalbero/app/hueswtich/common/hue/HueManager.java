@@ -81,7 +81,7 @@ public class HueManager {
     }
 
     public void onUpdateCache(List<Integer> list) {
-        Log.d("MyApp", "HueManager.onUpdateCache: ");
+//        Log.d("MyApp", "HueManager.onUpdateCache: ");
     }
 
     public void connect(PHAccessPoint accessPoint) {

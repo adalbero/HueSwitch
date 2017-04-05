@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.common.AppSettings;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.adalbero.app.hueswtich.common.listview.ListItem;
 import com.adalbero.app.hueswtich.common.listview.ListItemAdapter;
@@ -63,6 +62,7 @@ public class BulbsFragment extends Fragment {
 
     public void updateData() {
         PHBridge phBridge = HueManager.getPHBridge();
+//        Log.d("MyApp", "BulbsFragment.updateData: mAdapter:" + (mAdapter != null) + " bridge:" + (phBridge != null));
         if (mAdapter != null && phBridge != null) {
             List<PHLight> phLights = phBridge.getResourceCache().getAllLights();
 
@@ -85,8 +85,6 @@ public class BulbsFragment extends Fragment {
 
         private String mName;
         private int mState;
-
-        private boolean mColorIcon = false;
 
         public BulbItem(String identifier) {
             mIdentifier = identifier;
