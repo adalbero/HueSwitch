@@ -1,5 +1,6 @@
 package com.adalbero.app.hueswtich;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.adalbero.app.hueswtich.common.listview.ListItem;
 import com.adalbero.app.hueswtich.common.listview.ListItemAdapter;
+import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHLight;
@@ -57,7 +59,9 @@ public class BulbsFragment extends Fragment {
     }
 
     public void updateCache() {
-        mAdapter.notifyDataSetChanged();
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     public void updateData() {
@@ -108,6 +112,7 @@ public class BulbsFragment extends Fragment {
         public void updateView(View v) {
             PHLight light = getLight();
 
+            SharedPreferences settings = SettingsActivity.getPreferences(getActivity());
             mName = light.getName();
 
             PHLightState lightState = light.getLastKnownLightState();
@@ -124,14 +129,14 @@ public class BulbsFragment extends Fragment {
                 image.setColorFilter(v.getResources().getColor(R.color.colorDisable));
             } else if (mState == 1) {   // on
                 image.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_light_on));
-                if (AppSettings.flagShowColor()) {
+                if (settings.getBoolean(SettingsActivity.PREF_BULB_COLOR, false)) {
                     float[] hsv = getLightColor(lightState);
                     image.setColorFilter(Color.HSVToColor(hsv));
                 } else {
                     image.setColorFilter(v.getResources().getColor(R.color.colorOn));
                 }
                 String text = "On";
-                if (AppSettings.flagShowBri()) {
+                if (settings.getBoolean(SettingsActivity.PREF_BULB_BRI, false)) {
                     text = text + " (" + formatBri(lightState.getBrightness()) + ")";
                 }
                 itemState.setText(text);

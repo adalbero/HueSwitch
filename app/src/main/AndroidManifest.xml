@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".common.hue.HuePushlinkActivity" />
-
+        <activity
+            android:name=".common.settings.SettingsActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

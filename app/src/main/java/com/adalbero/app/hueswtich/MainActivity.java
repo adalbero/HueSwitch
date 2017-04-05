@@ -1,5 +1,6 @@
 package com.adalbero.app.hueswtich;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -7,9 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.adalbero.app.hueswtich.common.hue.HueManager;
+import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
 import com.philips.lighting.hue.sdk.PHMessageType;
 
 import java.util.List;
@@ -65,12 +68,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void updateCache(List<Integer> list) {
 //        Log.d("MyApp", "MainActivity.updateCache: ");
         if (list.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
 //            Log.d("MyApp", "MainActivity.updateCache: Light");
             mBulbsFragment.updateCache();
             mGroupsFragment.updateCache();
+            mHomeFragment.updateCache();
         }
 
         if (list.contains(PHMessageType.GROUPS_CACHE_UPDATED)) {
@@ -82,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateData() {
         mBulbsFragment.updateData();
         mGroupsFragment.updateData();
+        mHomeFragment.updateData();
     }
 
     @Override

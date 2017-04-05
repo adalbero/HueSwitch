@@ -62,7 +62,9 @@ public class GroupsFragment extends Fragment {
     }
 
     public void updateCache() {
-        mAdapter.notifyDataSetChanged();
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     public void updateData() {

@@ -1,13 +1,35 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/section_label"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home"
-        android:textAlignment="center"
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:text="Light"
         android:textSize="30sp" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/item_icon"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_light_off" />
+
+    <TextView
+        android:id="@+id/item_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:text="Off"
+        android:textSize="30sp" />
+
+
+</LinearLayout>

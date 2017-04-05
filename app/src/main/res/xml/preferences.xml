@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="pref_key_storage_settings"
+        android:title="Favorite Settings">
+
+        <ListPreference
+            android:key="pref_key_favorite"
+            android:title="Bulb to use in Favorite"
+            android:summary="%s" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_storage_settings"
+        android:title="Bulbs Settings">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_bulb_color"
+            android:summary="Reflect the color of the bulb in the icon."
+            android:title="Use bulb color" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_bulb_bri"
+            android:summary="Show information about the brightness of the bulb."
+            android:title="Show bulb brightness" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
