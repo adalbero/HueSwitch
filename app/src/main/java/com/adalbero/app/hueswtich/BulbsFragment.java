@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adalbero.app.hueswtich.common.AppSettings;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.adalbero.app.hueswtich.common.listview.ListItem;
 import com.adalbero.app.hueswtich.common.listview.ListItemAdapter;
@@ -77,6 +78,9 @@ public class BulbsFragment extends Fragment {
     }
 
     private class BulbItem extends ListItem {
+
+        private final float MIN_BRI = 0.4f;
+
         private String mIdentifier;
 
         private String mName;
@@ -122,13 +126,17 @@ public class BulbsFragment extends Fragment {
                 image.setColorFilter(v.getResources().getColor(R.color.colorDisable));
             } else if (mState == 1) {   // on
                 image.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_light_on));
-                float[] hsv = getLightColor(lightState);
-                int color = Color.HSVToColor(hsv);
-                if (!mColorIcon) {
-                    color = v.getResources().getColor(R.color.colorOn);
+                if (AppSettings.flagShowColor()) {
+                    float[] hsv = getLightColor(lightState);
+                    image.setColorFilter(Color.HSVToColor(hsv));
+                } else {
+                    image.setColorFilter(v.getResources().getColor(R.color.colorOn));
                 }
-                image.setColorFilter(color);
-                itemState.setText(String.format("On (%.0f%%)", hsv[2]*100));
+                String text = "On";
+                if (AppSettings.flagShowBri()) {
+                    text = text + " (" + formatBri(lightState.getBrightness()) + ")";
+                }
+                itemState.setText(text);
             } else {        // off
                 itemState.setText("Off");
                 image.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_light_off));
@@ -137,8 +145,7 @@ public class BulbsFragment extends Fragment {
         }
 
         private float[] getLightColor(PHLightState lightState) {
-            float min = 0.4f;
-            float b = lightState.getBrightness() / 254f * (1-min) + min;
+            float b = lightState.getBrightness() / 254f * (1- MIN_BRI) + MIN_BRI;
             float h;
             float s;
 
@@ -151,6 +158,16 @@ public class BulbsFragment extends Fragment {
             }
 
             return new float[]{h, s, b};
+        }
+
+        private String formatBri(int bri) {
+            if (bri <= 1) {
+                return "min";
+            } else if (bri >= 254) {
+                return "max";
+            } else {
+                return String.format("%d%%", bri * 100 / 254 + 1);
+            }
         }
 
         private void setOn(boolean on) {

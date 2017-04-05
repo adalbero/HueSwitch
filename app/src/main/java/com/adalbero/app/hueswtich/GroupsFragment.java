@@ -154,6 +154,8 @@ public class GroupsFragment extends Fragment {
                     } else {
                         allOn = false;
                     }
+                } else {
+                    allOn = false;
                 }
             }
 
