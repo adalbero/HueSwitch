@@ -6,7 +6,7 @@
 
         <ListPreference
             android:key="pref_key_favorite"
-            android:title="Bulb to use in Favorite"
+            android:title="Favorite Bulb/Group"
             android:summary="%s" />
 
     </PreferenceCategory>

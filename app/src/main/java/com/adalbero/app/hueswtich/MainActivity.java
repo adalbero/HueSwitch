@@ -8,13 +8,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.adalbero.app.hueswtich.common.hue.HueManager;
+import com.adalbero.app.hueswtich.common.listview.ListItem;
 import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
 import com.philips.lighting.hue.sdk.PHMessageType;
+import com.philips.lighting.model.PHBridge;
+import com.philips.lighting.model.PHGroup;
+import com.philips.lighting.model.PHLight;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,9 +33,18 @@ public class MainActivity extends AppCompatActivity {
     private BulbsFragment mBulbsFragment;
     private GroupsFragment mGroupsFragment;
 
+    private List<ResourceItem> mResources = new ArrayList<>();
+//    private List<ListItem> mGroups = new ArrayList<>();
+//    private BulbItem mFavorite = new BulbItem(null);
+
+    private long mTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("MyApp", "MainActivity.onCreate: ");
+
         setContentView(R.layout.activity_main);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -48,12 +63,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onConnect() {
                 super.onConnect();
+                Log.d("MyApp", "MainActivity.onConnect: ");
+                mTime = System.currentTimeMillis();
                 updateData();
             }
 
             @Override
             public void onUpdateCache(final List<Integer> list) {
                 super.onUpdateCache(list);
+                long time = System.currentTimeMillis();
+                Log.d("MyApp", "MainActivity.onUpdateCache: " + (time - mTime));
+                mTime = time;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -64,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         if (mHueManager.tryToConnect(true)) {
+            Log.d("MyApp", "MainActivity.tryToConnect: ");
             updateData();
         }
     }
@@ -86,22 +107,58 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public List<ResourceItem> getData() {
+        return mResources;
+    }
+
+    public ListItem getFavorite() {
+        String value = SettingsActivity.getPreferences(this).getString(SettingsActivity.PREF_KEY_FAVORITE, null);
+        if (value != null) {
+            String params[] = value.split(":");
+            String type = params.length > 1 ? params[0] : "B";
+            String identifier = params.length > 1? params[1] : params[0];
+
+            for (ResourceItem item : mResources) {
+                if (item.getIdentifier().equals(identifier)) {
+                    if (type.equals("B") && item instanceof BulbItem) {
+                        return item;
+                    } else if (type.equals("G") && item instanceof GroupItem) {
+                        return item;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     private void updateCache(List<Integer> list) {
-//        Log.d("MyApp", "MainActivity.updateCache: ");
         if (list.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
-//            Log.d("MyApp", "MainActivity.updateCache: Light");
             mBulbsFragment.updateCache();
             mGroupsFragment.updateCache();
             mHomeFragment.updateCache();
         }
 
         if (list.contains(PHMessageType.GROUPS_CACHE_UPDATED)) {
-//            Log.d("MyApp", "MainActivity.updateCache: Group");
             mGroupsFragment.updateCache();
         }
     }
 
     private void updateData() {
+        Log.d("MyApp", "MainActivity.updateData: ");
+
+        PHBridge phBridge = HueManager.getPHBridge();
+
+        List<PHLight> phLights = phBridge.getResourceCache().getAllLights();
+        for (PHLight phLight : phLights) {
+            mResources.add(new BulbItem(phLight.getIdentifier()));
+        }
+
+        List<PHGroup> phGroups = phBridge.getResourceCache().getAllGroups();
+        for (PHGroup phGroup : phGroups) {
+            mResources.add(new GroupItem(phGroup.getIdentifier()));
+        }
+
         mBulbsFragment.updateData();
         mGroupsFragment.updateData();
         mHomeFragment.updateData();
@@ -110,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        Log.d("MyApp", "MainActivity.onDestroy: ");
         mHueManager.finalize();
     }
 

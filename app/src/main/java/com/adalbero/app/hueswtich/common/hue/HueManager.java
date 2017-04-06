@@ -12,8 +12,11 @@ import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHMessageType;
 import com.philips.lighting.model.PHBridge;
+import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHHueError;
 import com.philips.lighting.model.PHHueParsingError;
+import com.philips.lighting.model.PHLight;
+import com.philips.lighting.model.PHLightState;
 
 import java.util.List;
 
@@ -41,7 +44,6 @@ public class HueManager {
 
         // Register the PHSDKListener to receive callbacks from the bridge.
         phHueSDK.getNotificationManager().registerSDKListener(listener);
-
     }
 
     public boolean tryToConnect(boolean fBridgeSearch) {
@@ -77,11 +79,10 @@ public class HueManager {
     }
 
     public void onConnect() {
-//        Log.d("MyApp", "HueManager.onConnect: ");
+        phHueSDK.enableHeartbeat(phHueSDK.getSelectedBridge(), PHHueSDK.HB_INTERVAL);
     }
 
     public void onUpdateCache(List<Integer> list) {
-//        Log.d("MyApp", "HueManager.onUpdateCache: ");
     }
 
     public void connect(PHAccessPoint accessPoint) {
@@ -103,12 +104,35 @@ public class HueManager {
 
     public void finalize() {
         phHueSDK.getNotificationManager().unregisterSDKListener(listener);
-        phHueSDK.disableAllHeartbeat();
+//        phHueSDK.disableAllHeartbeat();
+    }
+
+    public static boolean isConnected() {
+        return getPHBridge() != null;
     }
 
     public static PHBridge getPHBridge() {
         return PHHueSDK.getInstance().getSelectedBridge();
     }
+
+    public static void setOn(PHLight light, boolean on) {
+        PHLightState state = light.getLastKnownLightState();
+        state.setOn(on);
+        state.setTransitionTime(0);
+
+        HueManager.getPHBridge().updateLightState(light, state);
+        light.setLastKnownLightState(state);
+    }
+
+    public static void setOn(PHGroup group, boolean on) {
+        PHBridge bridge = HueManager.getPHBridge();
+
+        for (String identifier : group.getLightIdentifiers()) {
+            PHLight phLight = bridge.getResourceCache().getLights().get(identifier);
+            setOn(phLight, on);
+        }
+    }
+
 
 
     private HueListener listener = new HueListener() {

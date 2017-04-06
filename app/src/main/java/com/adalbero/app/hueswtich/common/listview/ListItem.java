@@ -7,7 +7,6 @@ import android.view.View;
  */
 
 public class ListItem {
-
     public void initView(View v) {}
     public void updateView(View v) {}
     public void onClick(View v) {}

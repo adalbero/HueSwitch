@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.philips.lighting.model.PHBridge;
+import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
 
 import java.util.List;
@@ -54,12 +55,24 @@ public class SettingsActivity extends AppCompatActivity {
             PHBridge bridge = HueManager.getPHBridge();
             if (bridge != null) {
                 List<PHLight> lights = bridge.getResourceCache().getAllLights();
-                String[] entries = new String[lights.size()];
-                String[] entryValues = new String[lights.size()];
+                List<PHGroup> groups = bridge.getResourceCache().getAllGroups();
 
-                for (int i=0; i<lights.size(); i++) {
-                    entries[i] = lights.get(i).getName();
-                    entryValues[i] = lights.get(i).getIdentifier();
+                int n = lights.size() + groups.size();
+                int i = 0;
+
+                String[] entries = new String[n];
+                String[] entryValues = new String[n];
+
+                for (PHLight light : lights) {
+                    entries[i] = "Bulb: " + light.getName();
+                    entryValues[i] = "B:" + light.getIdentifier();
+                    i++;
+                }
+
+                for (PHGroup group : groups) {
+                    entries[i] = "Group: " + group.getName();
+                    entryValues[i] = "G:" + group.getIdentifier();
+                    i++;
                 }
 
                 bulbList.setEntries(entries);
