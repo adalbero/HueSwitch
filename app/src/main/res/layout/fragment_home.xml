@@ -20,7 +20,9 @@
         android:layout_height="256dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
+        android:background="@drawable/shape_round_rect"
         android:clickable="true"
+        android:padding="16dp"
         app:srcCompat="@drawable/ic_light_off" />
 
     <TextView
