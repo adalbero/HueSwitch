@@ -128,7 +128,14 @@ public class HueManager {
         }
     }
 
+    public void disconnect() {
+        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 
+        prefs.remove("lastIpAddress");
+        prefs.remove("lastUsername");
+
+        prefs.apply();
+    }
 
     private HueListener listener = new HueListener() {
         @Override

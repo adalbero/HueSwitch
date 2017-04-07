@@ -7,4 +7,9 @@
         android:title="Settings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_disconnect"
+        android:title="Disconnect"
+        app:showAsAction="never" />
 </menu>

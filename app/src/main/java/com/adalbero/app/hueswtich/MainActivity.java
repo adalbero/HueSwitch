@@ -100,8 +100,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
+            case R.id.menu_disconnect:
+                disconnect();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void disconnect() {
+        mHueManager.disconnect();
+
+        if (mHueManager.tryToConnect(true)) {
+            updateData();
         }
     }
 

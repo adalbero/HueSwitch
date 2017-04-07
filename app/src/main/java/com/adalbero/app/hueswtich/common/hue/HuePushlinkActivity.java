@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -34,8 +33,6 @@ public class HuePushlinkActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d("MyApp", "HuePushlinkActivity.onCreate: ");
 
         setContentView(R.layout.activity_hue_pushlink);
         setTitle("Pushlink");
@@ -76,7 +73,9 @@ public class HuePushlinkActivity extends Activity {
         public void onAuthenticationRequired(PHAccessPoint arg0) {}
 
         @Override
-        public void onBridgeConnected(PHBridge bridge, String username) {}
+        public void onBridgeConnected(PHBridge bridge, String username) {
+            finish();
+        }
 
         @Override
         public void onCacheUpdated(List<Integer> arg0, PHBridge bridge) {}
@@ -89,6 +88,7 @@ public class HuePushlinkActivity extends Activity {
 
         @Override
         public void onError(final int code, final String message) {
+
             if (code == PHMessageType.PUSHLINK_BUTTON_NOT_PRESSED) {
                 incrementProgress();
             }
