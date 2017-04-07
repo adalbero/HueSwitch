@@ -8,5 +8,5 @@
 
     <color name="colorOn">#00FF00</color>
     <color name="colorOff">#a0a0a0</color>
-    <color name="colorDisable">#a0a0a0</color>
+    <color name="colorDisable">#616161</color>
 </resources>

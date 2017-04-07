@@ -1,3 +1,3 @@
-# HueSwtich
+# HueSwitch
 
 Simple Hue Switch
