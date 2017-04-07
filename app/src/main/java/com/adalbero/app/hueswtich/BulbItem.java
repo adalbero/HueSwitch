@@ -2,7 +2,6 @@ package com.adalbero.app.hueswtich;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,9 +57,6 @@ class BulbItem extends ResourceItem {
         itemName.setText(name);
 
         int state = getState();
-
-        if (mIdentifier.equals("2"))
-            Log.d("MyApp", "BulbItem.updateView: state: " + state);
 
         if (state < 0) {   // disabled
             image.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_light_disabled));
@@ -123,12 +119,19 @@ class BulbItem extends ResourceItem {
         if (state >= 0) {
             PHLight light = getLight();
             HueManager.setOn(light, state == 0);
-            updateView(v);
+//            updateView(v);
+            notifyChange(v);
         } else {
             String msg = getName() + " is disconnected";
             Toast.makeText(v.getContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void notifyChange(View v) {
+        MainActivity main = (MainActivity)v.getContext();
+
+        main.updateCache();
     }
 }
 

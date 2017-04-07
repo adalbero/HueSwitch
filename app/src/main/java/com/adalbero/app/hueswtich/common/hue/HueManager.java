@@ -107,21 +107,16 @@ public class HueManager {
 //        phHueSDK.disableAllHeartbeat();
     }
 
-    public static boolean isConnected() {
-        return getPHBridge() != null;
-    }
-
     public static PHBridge getPHBridge() {
         return PHHueSDK.getInstance().getSelectedBridge();
     }
 
     public static void setOn(PHLight light, boolean on) {
-        PHLightState state = light.getLastKnownLightState();
+        PHLightState state = new PHLightState();
+
         state.setOn(on);
-        state.setTransitionTime(0);
 
         HueManager.getPHBridge().updateLightState(light, state);
-        light.setLastKnownLightState(state);
     }
 
     public static void setOn(PHGroup group, boolean on) {

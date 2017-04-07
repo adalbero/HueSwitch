@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -34,16 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private GroupsFragment mGroupsFragment;
 
     private List<ResourceItem> mResources = new ArrayList<>();
-//    private List<ListItem> mGroups = new ArrayList<>();
-//    private BulbItem mFavorite = new BulbItem(null);
 
     private long mTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d("MyApp", "MainActivity.onCreate: ");
 
         setContentView(R.layout.activity_main);
 
@@ -63,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onConnect() {
                 super.onConnect();
-                Log.d("MyApp", "MainActivity.onConnect: ");
                 mTime = System.currentTimeMillis();
                 updateData();
             }
@@ -72,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void onUpdateCache(final List<Integer> list) {
                 super.onUpdateCache(list);
                 long time = System.currentTimeMillis();
-                Log.d("MyApp", "MainActivity.onUpdateCache: " + (time - mTime));
+//                Log.d("MyApp", "MainActivity.onUpdateCache: " + (time - mTime));
                 mTime = time;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -84,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
         if (mHueManager.tryToConnect(true)) {
-            Log.d("MyApp", "MainActivity.tryToConnect: ");
             updateData();
         }
     }
@@ -134,18 +127,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateCache(List<Integer> list) {
         if (list.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
-            mBulbsFragment.updateCache();
-            mGroupsFragment.updateCache();
-            mHomeFragment.updateCache();
+            updateCache();
         }
 
         if (list.contains(PHMessageType.GROUPS_CACHE_UPDATED)) {
-            mGroupsFragment.updateCache();
+            updateCache();
         }
     }
 
+    public void updateCache() {
+        mBulbsFragment.updateCache();
+        mGroupsFragment.updateCache();
+        mHomeFragment.updateCache();
+    }
+
     private void updateData() {
-        Log.d("MyApp", "MainActivity.updateData: ");
+//        Log.d("MyApp", "MainActivity.updateData: ");
 
         PHBridge phBridge = HueManager.getPHBridge();
 
@@ -168,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
 
-        Log.d("MyApp", "MainActivity.onDestroy: ");
         mHueManager.finalize();
     }
 

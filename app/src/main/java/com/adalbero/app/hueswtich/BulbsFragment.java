@@ -48,7 +48,11 @@ public class BulbsFragment extends Fragment {
 
     public void updateCache() {
         if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
+            if (mAdapter.getCount() == 0) {
+                updateData();
+            } else {
+                mAdapter.notifyDataSetChanged();
+            }
         }
     }
 

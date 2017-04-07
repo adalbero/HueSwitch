@@ -99,12 +99,20 @@ class GroupItem extends ResourceItem {
         if (state >= 0) {
             PHGroup group = getGroup();
             HueManager.setOn(group, state == 0);
-            updateView(v);
+//            updateView(v);
+            notifyChange(v);
         } else {
             String msg = "All lights in " + getName() + " are disconnected";
             Toast.makeText(v.getContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
     }
+
+    public void notifyChange(View v) {
+        MainActivity main = (MainActivity)v.getContext();
+
+        main.updateCache();
+    }
+
 }
 
