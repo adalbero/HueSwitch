@@ -1,10 +1,12 @@
-package com.adalbero.app.hueswtich;
+package com.adalbero.app.hueswtich.data;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adalbero.app.hueswtich.MainActivity;
+import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
@@ -15,7 +17,7 @@ import com.philips.lighting.model.PHLightState;
  * Created by Adalbero on 06/04/2017.
  */
 
-class GroupItem extends ResourceItem {
+public class GroupItem extends ResourceItem {
 
     public GroupItem(String identifier) {
         super(identifier);

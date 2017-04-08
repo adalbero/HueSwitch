@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich;
+package com.adalbero.app.hueswtich.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adalbero.app.hueswtich.MainActivity;
+import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.listview.ListItem;
 
 /**

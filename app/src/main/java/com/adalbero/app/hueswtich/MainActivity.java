@@ -15,6 +15,12 @@ import android.view.MenuItem;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.adalbero.app.hueswtich.common.listview.ListItem;
 import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
+import com.adalbero.app.hueswtich.data.BulbItem;
+import com.adalbero.app.hueswtich.data.GroupItem;
+import com.adalbero.app.hueswtich.data.ResourceItem;
+import com.adalbero.app.hueswtich.view.BulbsFragment;
+import com.adalbero.app.hueswtich.view.GroupsFragment;
+import com.adalbero.app.hueswtich.view.HomeFragment;
 import com.philips.lighting.hue.sdk.PHMessageType;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
@@ -34,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private GroupsFragment mGroupsFragment;
 
     private List<ResourceItem> mResources = new ArrayList<>();
-
-    private long mTime;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -63,16 +67,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onConnect() {
                 super.onConnect();
-                mTime = System.currentTimeMillis();
                 updateData();
             }
 
             @Override
             public void onUpdateCache(final List<Integer> list) {
                 super.onUpdateCache(list);
-                long time = System.currentTimeMillis();
-//                Log.d("MyApp", "MainActivity.onUpdateCache: " + (time - mTime));
-                mTime = time;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -157,8 +157,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateData() {
-//        Log.d("MyApp", "MainActivity.updateData: ");
-
         PHBridge phBridge = HueManager.getPHBridge();
 
         List<PHLight> phLights = phBridge.getResourceCache().getAllLights();

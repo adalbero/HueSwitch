@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich;
+package com.adalbero.app.hueswtich.data;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adalbero.app.hueswtich.MainActivity;
+import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
 import com.philips.lighting.model.PHLight;
@@ -16,7 +18,7 @@ import com.philips.lighting.model.PHLightState;
  * Created by Adalbero on 06/04/2017.
  */
 
-class BulbItem extends ResourceItem {
+public class BulbItem extends ResourceItem {
 
     public BulbItem(String identifier) {
         super(identifier);

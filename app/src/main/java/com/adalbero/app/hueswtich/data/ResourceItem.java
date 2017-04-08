@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich;
+package com.adalbero.app.hueswtich.data;
 
 import com.adalbero.app.hueswtich.common.listview.ListItem;
 
