@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.adalbero.app.hueswtich.MainActivity;
 import com.adalbero.app.hueswtich.R;
+import com.adalbero.app.hueswtich.controller.AppController;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
@@ -19,6 +21,7 @@ import com.philips.lighting.model.PHLight;
 import com.philips.lighting.model.PHLightState;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Adalbero on 04/04/2017.
@@ -27,10 +30,16 @@ import java.util.List;
 public class HueManager {
     private static String TAG = "MyApp";
 
+    public static final int DISCONNECTED = 0;
+    public static final int CONNECTED = 1;
+    public static final int OFF_LINE = 2;
+
     private Activity mContext;
 
     private PHHueSDK phHueSDK;
     private boolean lastSearchWasIPScan = false;
+
+    private int mStatus = DISCONNECTED;
 
     public HueManager(Activity context) {
         mContext = context;
@@ -44,6 +53,29 @@ public class HueManager {
 
         // Register the PHSDKListener to receive callbacks from the bridge.
         phHueSDK.getNotificationManager().registerSDKListener(listener);
+    }
+
+    public void setContext(Activity context) {
+        mContext = context;
+    }
+
+    public int getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(int status) {
+        mStatus = status;
+        Activity currentActivity = AppController.getInstance().getCurrentActivity();
+
+        if (currentActivity instanceof MainActivity) {
+            final MainActivity main = (MainActivity)currentActivity;
+            main.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    main.updateView();
+                }
+            });
+        }
     }
 
     public boolean tryToConnect(boolean fBridgeSearch) {
@@ -86,8 +118,6 @@ public class HueManager {
     }
 
     public void connect(PHAccessPoint accessPoint) {
-//        Log.d("MyApp", "HueManager.connect: ");
-
         PHBridge connectedBridge = phHueSDK.getSelectedBridge();
 
         if (connectedBridge != null) {
@@ -102,9 +132,9 @@ public class HueManager {
         phHueSDK.connect(accessPoint);
     }
 
-    public void finalize() {
+    public void destroy() {
+        phHueSDK.disableAllHeartbeat();
         phHueSDK.getNotificationManager().unregisterSDKListener(listener);
-//        phHueSDK.disableAllHeartbeat();
     }
 
     public static PHBridge getPHBridge() {
@@ -116,7 +146,12 @@ public class HueManager {
 
         state.setOn(on);
 
-        HueManager.getPHBridge().updateLightState(light, state);
+        HueManager.getPHBridge().updateLightState(light, state, new HueLightListener() {
+            @Override
+            public void onStateUpdate(Map<String, String> map, List<PHHueError> list) {
+                AppController.getInstance().notifyDataChanged(false);
+            }
+        });
     }
 
     public static void setOn(PHGroup group, boolean on) {
@@ -126,15 +161,6 @@ public class HueManager {
             PHLight phLight = bridge.getResourceCache().getLights().get(identifier);
             setOn(phLight, on);
         }
-    }
-
-    public void disconnect() {
-        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-
-        prefs.remove("lastIpAddress");
-        prefs.remove("lastUsername");
-
-        prefs.apply();
     }
 
     private HueListener listener = new HueListener() {
@@ -165,6 +191,7 @@ public class HueManager {
                 }
             });
 
+            setStatus(CONNECTED);
         }
 
         @Override
@@ -194,6 +221,9 @@ public class HueManager {
 
         @Override
         public void onConnectionResumed(PHBridge bridge) {
+
+            setStatus(CONNECTED);
+
             if (mContext.isFinishing())
                 return;
 
@@ -210,6 +240,8 @@ public class HueManager {
         @Override
         public void onConnectionLost(PHAccessPoint accessPoint) {
 
+            setStatus(OFF_LINE);
+
             if (!phHueSDK.getDisconnectedAccessPoint().contains(accessPoint)) {
                 phHueSDK.getDisconnectedAccessPoint().add(accessPoint);
             }
@@ -220,7 +252,7 @@ public class HueManager {
         public void onError(int code, final String message) {
 
             if (code == PHHueError.NO_CONNECTION) {
-                Log.w(TAG, "On No Connection");
+                Log.w(TAG, "No Connection");
             } else if (code == PHHueError.AUTHENTICATION_FAILED || code == PHMessageType.PUSHLINK_AUTHENTICATION_FAILED) {
                 Log.w(TAG, "Authentication Failed.");
                 HueAlertDialog.getInstance().closeProgressDialog();

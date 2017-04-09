@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.WindowManager;
 
 /**
@@ -38,9 +37,6 @@ public final class HueAlertDialog {
 
     }
 
-    /**
-     * Stops running progress-bar
-     */
     public void closeProgressDialog() {
 
         if (pdialog != null) {
@@ -49,30 +45,10 @@ public final class HueAlertDialog {
         }
     }
 
-    /**
-     * Shows progress-bar
-     */
     public void showProgressDialog(String message, Context ctx) {
         pdialog = ProgressDialog.show(ctx, null, message, true, true);
         pdialog.setCancelable(false);
 
-    }
-
-    public static void showAuthenticationErrorDialog(
-            final Activity activityContext, String msg, int btnNameResId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
-        builder.setTitle("Error").setMessage(msg)
-                .setPositiveButton(btnNameResId, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        activityContext.finish();
-
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        alert.show();
     }
 
 }

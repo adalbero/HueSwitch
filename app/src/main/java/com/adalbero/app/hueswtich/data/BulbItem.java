@@ -7,10 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.MainActivity;
 import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
 import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
+import com.adalbero.app.hueswtich.controller.AppController;
 import com.philips.lighting.model.PHLight;
 import com.philips.lighting.model.PHLightState;
 
@@ -20,8 +20,11 @@ import com.philips.lighting.model.PHLightState;
 
 public class BulbItem extends ResourceItem {
 
+    private AppController mAppController;
+
     public BulbItem(String identifier) {
         super(identifier);
+        mAppController = AppController.getInstance();
     }
 
     public PHLight getLight() {
@@ -47,9 +50,7 @@ public class BulbItem extends ResourceItem {
 
     @Override
     public void updateView(View v) {
-//        if (!HueManager.isConnected()) return;
-
-        SharedPreferences settings = SettingsActivity.getPreferences(v.getContext());
+        SharedPreferences settings = mAppController.getPreferences();
 
         TextView itemName = (TextView) v.findViewById(R.id.item_name);
         TextView itemState = (TextView) v.findViewById(R.id.item_state);
@@ -117,12 +118,14 @@ public class BulbItem extends ResourceItem {
 
     @Override
     public void onClick(View v) {
+        if (mAppController.hueIsBridgeOffLine(true)) {
+            return;
+        }
+
         int state = getState();
         if (state >= 0) {
             PHLight light = getLight();
             HueManager.setOn(light, state == 0);
-//            updateView(v);
-            notifyChange(v);
         } else {
             String msg = getName() + " is disconnected";
             Toast.makeText(v.getContext(), msg, Toast.LENGTH_SHORT).show();
@@ -130,10 +133,5 @@ public class BulbItem extends ResourceItem {
 
     }
 
-    public void notifyChange(View v) {
-        MainActivity main = (MainActivity)v.getContext();
-
-        main.updateCache();
-    }
 }
 

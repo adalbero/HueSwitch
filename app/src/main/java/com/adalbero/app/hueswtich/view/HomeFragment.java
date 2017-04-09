@@ -5,18 +5,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.MainActivity;
 import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.listview.ListItem;
+import com.adalbero.app.hueswtich.controller.AppController;
+import com.adalbero.app.hueswtich.controller.AppListener;
 
 /**
  * Created by Adalbero on 04/04/2017.
  */
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AppListener {
 
     private View mView;
+
+    private AppController mAppController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +38,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        mAppController = AppController.getInstance();
+        mAppController.registerAppListener(this);
+
         return v;
     }
 
@@ -41,35 +48,33 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        updateCache();
-    }
-
-    public void updateCache() {
-        ListItem favorite = getFavorite();
-        if (favorite != null) {
-            favorite.updateView(mView);
-        }
-    }
-
-    public void updateData() {
-        updateCache();
+        onDataChanged(true);
     }
 
     public void onClickIcon() {
-        ListItem favorite = getFavorite();
+        ListItem favorite = mAppController.getFavorite();
         if (favorite != null) {
             favorite.onClick(mView);
+        } else if (!mAppController.hueIsBridgeConnected()) {
+            Toast.makeText(getActivity(), "Click on Settings to connect", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Select a Bulb/Group on Settings", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public ListItem getFavorite() {
-        ListItem favorite = null;
-
-        MainActivity main = (MainActivity)getActivity();
-        if (main != null) {
-            favorite = main.getFavorite();
+    @Override
+    public void onDataChanged(boolean bInit) {
+        ListItem favorite = mAppController.getFavorite();
+        if (favorite != null) {
+            favorite.updateView(mView);
+        } else {
+//            TextView nameView = (TextView) mView.findViewById(R.id.item_name);
+//            if (mAppController.hueIsBridgeConnected()) {
+//                nameView.setText("No Bulb/Group");
+//            } else {
+//                nameView.setText("No bridge connected");
+//            }
         }
-
-        return favorite;
     }
+
 }

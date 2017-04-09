@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.adalbero.app.hueswtich.MainActivity;
 import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.listview.ListItem;
 import com.adalbero.app.hueswtich.common.listview.ListItemAdapter;
+import com.adalbero.app.hueswtich.controller.AppController;
+import com.adalbero.app.hueswtich.controller.AppListener;
 import com.adalbero.app.hueswtich.data.BulbItem;
 import com.adalbero.app.hueswtich.data.ResourceItem;
 
@@ -22,9 +23,10 @@ import java.util.List;
  * Created by Adalbero on 04/04/2017.
  */
 
-public class BulbsFragment extends Fragment {
+public class BulbsFragment extends Fragment implements AppListener {
     private ListView mListView;
     private ListItemAdapter mAdapter;
+    private AppController mAppController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,33 +47,29 @@ public class BulbsFragment extends Fragment {
             }
         });
 
-        updateData();
+        mAppController = AppController.getInstance();
+        mAppController.registerAppListener(this);
+
+        onDataChanged(true);
 
         return v;
     }
 
-    public void updateCache() {
+    @Override
+    public void onDataChanged(boolean bInit) {
         if (mAdapter != null) {
-            if (mAdapter.getCount() == 0) {
-                updateData();
+            if (bInit || mAdapter.getCount() == 0) {
+                List<ResourceItem> data = mAppController.getData();
+
+                mAdapter.clear();
+                for (ListItem item : data) {
+                    if (item instanceof BulbItem) {
+                        mAdapter.add(item);
+                    }
+                }
             } else {
                 mAdapter.notifyDataSetChanged();
             }
         }
     }
-
-    public void updateData() {
-        if (mAdapter != null) {
-            List<ResourceItem> data = ((MainActivity) getActivity()).getData();
-
-            mAdapter.clear();
-            for (ListItem item : data) {
-                if (item instanceof BulbItem) {
-                    mAdapter.add(item);
-                }
-            }
-        }
-    }
-
-
 }

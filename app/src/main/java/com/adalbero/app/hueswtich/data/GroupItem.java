@@ -5,9 +5,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.MainActivity;
 import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
+import com.adalbero.app.hueswtich.controller.AppController;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
@@ -19,8 +19,11 @@ import com.philips.lighting.model.PHLightState;
 
 public class GroupItem extends ResourceItem {
 
+    private AppController mAppController;
+
     public GroupItem(String identifier) {
         super(identifier);
+        mAppController = AppController.getInstance();
     }
 
     private PHGroup getGroup() {
@@ -71,7 +74,6 @@ public class GroupItem extends ResourceItem {
         String name = getName();
         itemName.setText(name);
 
-
         int state = getState();
 
         if (state < 0) {   // disabled
@@ -97,23 +99,19 @@ public class GroupItem extends ResourceItem {
 
     @Override
     public void onClick(View v) {
+        if (mAppController.hueIsBridgeOffLine(true)) {
+            return;
+        }
+
         int state = getState();
         if (state >= 0) {
             PHGroup group = getGroup();
             HueManager.setOn(group, state == 0);
-//            updateView(v);
-            notifyChange(v);
         } else {
             String msg = "All lights in " + getName() + " are disconnected";
             Toast.makeText(v.getContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    public void notifyChange(View v) {
-        MainActivity main = (MainActivity)v.getContext();
-
-        main.updateCache();
     }
 
 }

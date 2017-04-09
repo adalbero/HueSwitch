@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
-        android:text="Light"
+        android:text="No bulb selected"
         android:textSize="30sp" />
 
     <ImageView
@@ -24,7 +24,7 @@
         android:scaleType="fitXY"
         android:clickable="true"
         android:padding="16dp"
-        app:srcCompat="@drawable/ic_light_off" />
+        app:srcCompat="@drawable/ic_light_disabled" />
 
     <TextView
         android:id="@+id/item_state"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
-        android:text="Off"
+        android:text="Unknown"
         android:textSize="30sp" />
 
 

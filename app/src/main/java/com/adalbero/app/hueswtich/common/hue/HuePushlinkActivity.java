@@ -42,6 +42,7 @@ public class HuePushlinkActivity extends Activity {
 
         pbar = (ProgressBar) findViewById(R.id.countdownPB);
         pbar.setMax(MAX_TIME);
+        pbar.setProgress(0);
 
         phHueSDK.getNotificationManager().registerSDKListener(listener);
 

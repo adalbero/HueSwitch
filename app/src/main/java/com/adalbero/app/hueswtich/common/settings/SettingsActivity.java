@@ -1,16 +1,14 @@
 package com.adalbero.app.hueswtich.common.settings;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.adalbero.app.hueswtich.R;
 import com.adalbero.app.hueswtich.common.hue.HueManager;
+import com.adalbero.app.hueswtich.controller.AppController;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
@@ -26,12 +24,22 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String PREF_BULB_BRI = "pref_bulb_bri";
     public static final String PREF_KEY_FAVORITE = "pref_key_favorite";
 
+    private AppController mAppControler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
         getSupportActionBar().setTitle("Settings");
+
+        mAppControler = AppController.getInstance(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAppControler.setContext(this);
     }
 
     @Override
@@ -80,11 +88,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    public static SharedPreferences getPreferences(Context context) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPref;
     }
 
 }
