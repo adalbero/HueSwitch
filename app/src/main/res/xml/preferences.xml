@@ -29,4 +29,13 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="About">
+
+        <Preference
+            android:summary="Ver. 0.5 (beta)"
+            android:title="Version" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
