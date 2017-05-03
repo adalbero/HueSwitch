@@ -1,0 +1,17 @@
+Ver 0.6.0
+- [Add] AdMob
+- [Fix] Landscape Layout
+- [Fix] Data/state lost after long period of inactivity
+
+Ver 0.5
+- [New] Favorite Bulb
+- [New] List of bulbs
+- [New] List of groups
+- [New] Preferences
+
+Known Bugs
+- [Bug] Change package name
+
+New Features
+- [New] set brightness
+- [New] widget
