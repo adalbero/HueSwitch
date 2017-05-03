@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,13 +55,15 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         mAppController = AppController.getInstance(this);
-        mAppController.hueConnect();
+//        mAppController.hueConnect();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
         mAppController.setContext(this);
+        mAppController.hueConnect();
         updateView();
     }
 
