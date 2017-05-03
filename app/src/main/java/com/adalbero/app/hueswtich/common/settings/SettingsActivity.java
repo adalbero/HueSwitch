@@ -1,8 +1,11 @@
 package com.adalbero.app.hueswtich.common.settings;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 
@@ -56,10 +59,13 @@ public class SettingsActivity extends AppCompatActivity {
             addPreferencesFromResource(R.xml.preferences);
 
             initFavoriteBulb();
+
+            Preference pref1 = findPreference("version");
+            pref1.setSummary(appVersion());
         }
 
         private void initFavoriteBulb() {
-            ListPreference bulbList = (ListPreference)findPreference(PREF_KEY_FAVORITE);
+            ListPreference bulbList = (ListPreference) findPreference(PREF_KEY_FAVORITE);
             PHBridge bridge = HueManager.getPHBridge();
             if (bridge != null) {
                 List<PHLight> lights = bridge.getResourceCache().getAllLights();
@@ -85,6 +91,15 @@ public class SettingsActivity extends AppCompatActivity {
 
                 bulbList.setEntries(entries);
                 bulbList.setEntryValues(entryValues);
+            }
+        }
+
+        public String appVersion() {
+            try {
+                PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+                return pInfo.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                return "unknown";
             }
         }
 

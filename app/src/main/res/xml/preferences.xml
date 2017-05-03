@@ -6,8 +6,8 @@
 
         <ListPreference
             android:key="pref_key_favorite"
-            android:title="Favorite Bulb/Group"
-            android:summary="%s" />
+            android:summary="%s"
+            android:title="Favorite Bulb/Group" />
 
     </PreferenceCategory>
 
@@ -29,11 +29,11 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="About">
+    <PreferenceCategory android:title="About">
 
         <Preference
-            android:summary="Ver. 0.5 (beta)"
+            android:key="version"
+            android:summary="unknown"
             android:title="Version" />
 
     </PreferenceCategory>

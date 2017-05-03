@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +19,9 @@ import com.adalbero.app.hueswtich.controller.AppController;
 import com.adalbero.app.hueswtich.view.BulbsFragment;
 import com.adalbero.app.hueswtich.view.GroupsFragment;
 import com.adalbero.app.hueswtich.view.HomeFragment;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +58,24 @@ public class MainActivity extends AppCompatActivity {
 
         mAppController = AppController.getInstance(this);
 //        mAppController.hueConnect();
+
+        initAdView();
+}
+
+    private void initAdView() {
+        String ADS_APP_ID = "ca-app-pub-5723913637413365~4650789131";
+        String DEVICE_NEXUS_5X = "580cd7e67c712dc2";
+
+        MobileAds.initialize(getApplicationContext(), ADS_APP_ID);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(DEVICE_NEXUS_5X)
+                .build();
+
+        AdView mAdView = (AdView)findViewById(R.id.adView);
+
+        mAdView.loadAd(adRequest);
     }
 
     @Override
@@ -68,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateView() {
-        TextView v = (TextView)findViewById(R.id.main_status);
+        TextView v = (TextView) findViewById(R.id.main_status);
         if (mAppController.hueIsBridgeOffLine(false)) {
             v.setVisibility(View.VISIBLE);
             v.setText("Bridge is offline");
-        } else if (!mAppController.hueIsBridgeConnected()){
+        } else if (!mAppController.hueIsBridgeConnected()) {
             v.setVisibility(View.VISIBLE);
             v.setText("No bridge connected");
         } else {
