@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.view;
+package com.adalbero.app.hueswitch.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.adalbero.app.hueswtich.R;
-import com.adalbero.app.hueswtich.common.listview.ListItem;
-import com.adalbero.app.hueswtich.common.listview.ListItemAdapter;
-import com.adalbero.app.hueswtich.controller.AppController;
-import com.adalbero.app.hueswtich.controller.AppListener;
-import com.adalbero.app.hueswtich.data.GroupItem;
-import com.adalbero.app.hueswtich.data.ResourceItem;
+import com.adalbero.app.hueswitch.R;
+import com.adalbero.app.hueswitch.common.listview.ListItem;
+import com.adalbero.app.hueswitch.common.listview.ListItemAdapter;
+import com.adalbero.app.hueswitch.controller.AppController;
+import com.adalbero.app.hueswitch.controller.AppListener;
+import com.adalbero.app.hueswitch.data.BulbItem;
+import com.adalbero.app.hueswitch.data.ResourceItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Adalbero on 04/04/2017.
  */
 
-public class GroupsFragment extends Fragment implements AppListener {
+public class BulbsFragment extends Fragment implements AppListener {
     private ListView mListView;
     private ListItemAdapter mAdapter;
     private AppController mAppController;
@@ -32,10 +32,10 @@ public class GroupsFragment extends Fragment implements AppListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_groups, container, false);
+        View v = inflater.inflate(R.layout.fragment_bulbs, container, false);
 
         List<ListItem> data = new ArrayList<>();
-        mAdapter = new ListItemAdapter(getActivity(), R.layout.item_group, data);
+        mAdapter = new ListItemAdapter(getActivity(), R.layout.item_bulb, data);
 
         mListView = (ListView) v.findViewById(R.id.list_view);
         mListView.setAdapter(mAdapter);
@@ -63,7 +63,7 @@ public class GroupsFragment extends Fragment implements AppListener {
 
                 mAdapter.clear();
                 for (ListItem item : data) {
-                    if (item instanceof GroupItem) {
+                    if (item instanceof BulbItem) {
                         mAdapter.add(item);
                     }
                 }
@@ -72,5 +72,4 @@ public class GroupsFragment extends Fragment implements AppListener {
             }
         }
     }
-
 }

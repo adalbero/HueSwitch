@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.common.settings;
+package com.adalbero.app.hueswitch.common.settings;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,9 +9,9 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.adalbero.app.hueswtich.R;
-import com.adalbero.app.hueswtich.common.hue.HueManager;
-import com.adalbero.app.hueswtich.controller.AppController;
+import com.adalbero.app.hueswitch.R;
+import com.adalbero.app.hueswitch.common.hue.HueController;
+import com.adalbero.app.hueswitch.controller.AppController;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
@@ -66,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         private void initFavoriteBulb() {
             ListPreference bulbList = (ListPreference) findPreference(PREF_KEY_FAVORITE);
-            PHBridge bridge = HueManager.getPHBridge();
+            PHBridge bridge = HueController.getPHBridge();
             if (bridge != null) {
                 List<PHLight> lights = bridge.getResourceCache().getAllLights();
                 List<PHGroup> groups = bridge.getResourceCache().getAllGroups();

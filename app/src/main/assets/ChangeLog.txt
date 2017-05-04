@@ -1,3 +1,6 @@
+Ver 0.6.1
+- [Fix] Pacakge name typo
+
 Ver 0.6.0
 - [Add] AdMob
 - [Fix] Landscape Layout

@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.data;
+package com.adalbero.app.hueswitch.data;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -7,10 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.R;
-import com.adalbero.app.hueswtich.common.hue.HueManager;
-import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
-import com.adalbero.app.hueswtich.controller.AppController;
+import com.adalbero.app.hueswitch.R;
+import com.adalbero.app.hueswitch.common.hue.HueController;
+import com.adalbero.app.hueswitch.common.settings.SettingsActivity;
+import com.adalbero.app.hueswitch.controller.AppController;
 import com.philips.lighting.model.PHLight;
 import com.philips.lighting.model.PHLightState;
 
@@ -28,7 +28,7 @@ public class BulbItem extends ResourceItem {
     }
 
     public PHLight getLight() {
-        return HueManager.getPHBridge().getResourceCache().getLights().get(mIdentifier);
+        return HueController.getPHBridge().getResourceCache().getLights().get(mIdentifier);
     }
 
     public String getName() {
@@ -125,7 +125,7 @@ public class BulbItem extends ResourceItem {
         int state = getState();
         if (state >= 0) {
             PHLight light = getLight();
-            HueManager.setOn(light, state == 0);
+            HueController.setOn(light, state == 0);
         } else {
             String msg = getName() + " is disconnected";
             Toast.makeText(v.getContext(), msg, Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.common.hue;
+package com.adalbero.app.hueswitch.common.hue;
 
 import android.app.Activity;
 import android.app.AlertDialog;

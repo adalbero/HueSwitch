@@ -1,13 +1,13 @@
-package com.adalbero.app.hueswtich.data;
+package com.adalbero.app.hueswitch.data;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.R;
-import com.adalbero.app.hueswtich.common.hue.HueManager;
-import com.adalbero.app.hueswtich.controller.AppController;
+import com.adalbero.app.hueswitch.R;
+import com.adalbero.app.hueswitch.common.hue.HueController;
+import com.adalbero.app.hueswitch.controller.AppController;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
@@ -27,7 +27,7 @@ public class GroupItem extends ResourceItem {
     }
 
     private PHGroup getGroup() {
-        return HueManager.getPHBridge().getResourceCache().getGroups().get(mIdentifier);
+        return HueController.getPHBridge().getResourceCache().getGroups().get(mIdentifier);
     }
 
     public String getName() {
@@ -35,7 +35,7 @@ public class GroupItem extends ResourceItem {
     }
 
     public int getState() {
-        PHBridge bridge = HueManager.getPHBridge();
+        PHBridge bridge = HueController.getPHBridge();
         PHGroup group = getGroup();
 
         boolean anyReachable = false;
@@ -106,7 +106,7 @@ public class GroupItem extends ResourceItem {
         int state = getState();
         if (state >= 0) {
             PHGroup group = getGroup();
-            HueManager.setOn(group, state == 0);
+            HueController.setOn(group, state == 0);
         } else {
             String msg = "All lights in " + getName() + " are disconnected";
             Toast.makeText(v.getContext(), msg, Toast.LENGTH_SHORT).show();

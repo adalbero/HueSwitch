@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich;
+package com.adalbero.app.hueswitch;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

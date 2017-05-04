@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.common.listview;
+package com.adalbero.app.hueswitch.common.listview;
 
 import android.view.View;
 

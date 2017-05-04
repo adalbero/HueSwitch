@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich;
+package com.adalbero.app.hueswitch;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
-import com.adalbero.app.hueswtich.controller.AppController;
-import com.adalbero.app.hueswtich.view.BulbsFragment;
-import com.adalbero.app.hueswtich.view.GroupsFragment;
-import com.adalbero.app.hueswtich.view.HomeFragment;
+import com.adalbero.app.hueswitch.common.settings.SettingsActivity;
+import com.adalbero.app.hueswitch.controller.AppController;
+import com.adalbero.app.hueswitch.view.BulbsFragment;
+import com.adalbero.app.hueswitch.view.GroupsFragment;
+import com.adalbero.app.hueswitch.view.HomeFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 .addTestDevice(DEVICE_NEXUS_5X)
                 .build();
 
-        AdView mAdView = (AdView)findViewById(R.id.adView);
+        AdView adView = (AdView)findViewById(R.id.adView);
 
-        mAdView.loadAd(adRequest);
+        adView.loadAd(adRequest);
     }
 
     @Override

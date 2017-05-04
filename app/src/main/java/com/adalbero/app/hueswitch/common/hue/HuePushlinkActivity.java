@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.common.hue;
+package com.adalbero.app.hueswitch.common.hue;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
-import com.adalbero.app.hueswtich.R;
+import com.adalbero.app.hueswitch.R;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHMessageType;

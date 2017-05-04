@@ -1,6 +1,6 @@
-package com.adalbero.app.hueswtich.data;
+package com.adalbero.app.hueswitch.data;
 
-import com.adalbero.app.hueswtich.common.listview.ListItem;
+import com.adalbero.app.hueswitch.common.listview.ListItem;
 
 /**
  * Created by Adalbero on 06/04/2017.

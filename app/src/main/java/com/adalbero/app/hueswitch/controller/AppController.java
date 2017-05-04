@@ -1,16 +1,16 @@
-package com.adalbero.app.hueswtich.controller;
+package com.adalbero.app.hueswitch.controller;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.common.hue.HueManager;
-import com.adalbero.app.hueswtich.common.listview.ListItem;
-import com.adalbero.app.hueswtich.common.settings.SettingsActivity;
-import com.adalbero.app.hueswtich.data.BulbItem;
-import com.adalbero.app.hueswtich.data.GroupItem;
-import com.adalbero.app.hueswtich.data.ResourceItem;
+import com.adalbero.app.hueswitch.common.hue.HueController;
+import com.adalbero.app.hueswitch.common.listview.ListItem;
+import com.adalbero.app.hueswitch.common.settings.SettingsActivity;
+import com.adalbero.app.hueswitch.data.BulbItem;
+import com.adalbero.app.hueswitch.data.GroupItem;
+import com.adalbero.app.hueswitch.data.ResourceItem;
 import com.philips.lighting.hue.sdk.PHMessageType;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
@@ -31,13 +31,13 @@ public class AppController {
     private Activity mContext;
 
     private List<ResourceItem> mResources = new ArrayList<>();
-    private HueManager mHueManager;
+    private HueController mHueController;
     private Set<AppListener> mAppListeners = new HashSet<>();
 
 
     private AppController(Activity context) {
         mContext = context;
-        initHueManager();
+        initHueController();
     }
 
     public static AppController getInstance(Activity context) {
@@ -56,8 +56,8 @@ public class AppController {
         mAppListeners.add(listener);
     }
 
-    private void initHueManager() {
-        mHueManager = new HueManager(mContext) {
+    private void initHueController() {
+        mHueController = new HueController(mContext) {
             @Override
             public void onConnect() {
                 super.onConnect();
@@ -73,7 +73,7 @@ public class AppController {
     }
 
     private void updateData() {
-        PHBridge phBridge = HueManager.getPHBridge();
+        PHBridge phBridge = HueController.getPHBridge();
         mResources.clear();
 
         List<PHLight> phLights = phBridge.getResourceCache().getAllLights();
@@ -112,21 +112,21 @@ public class AppController {
 
     public void setContext(Activity context) {
         mContext = context;
-        mHueManager.setContext(context);
+        mHueController.setContext(context);
     }
 
     public void hueConnect() {
-        if (mHueManager.tryToConnect(true)) {
+        if (mHueController.tryToConnect(true)) {
             updateData();
         }
     }
 
     public boolean hueIsBridgeConnected() {
-        return mHueManager.getStatus() > 0;
+        return mHueController.getStatus() > 0;
     }
 
     public boolean hueIsBridgeOffLine(boolean bShowToast) {
-        boolean isOffline = mHueManager.getStatus() == HueManager.OFF_LINE;
+        boolean isOffline = mHueController.getStatus() == HueController.OFF_LINE;
 
         if (isOffline && bShowToast) {
             Toast.makeText(getCurrentActivity(), "Bridge is offline", Toast.LENGTH_SHORT).show();
@@ -144,12 +144,12 @@ public class AppController {
         edit.clear();
         edit.commit();
 
-        mHueManager.destroy();
+        mHueController.destroy();
         mResources.clear();
     }
 
     public void destroy() {
-        mHueManager.destroy();
+        mHueController.destroy();
     }
 
     public List<ResourceItem> getData() {

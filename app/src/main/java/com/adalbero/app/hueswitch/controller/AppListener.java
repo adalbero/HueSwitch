@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.controller;
+package com.adalbero.app.hueswitch.controller;
 
 /**
  * Created by Adalbero on 08/04/2017.

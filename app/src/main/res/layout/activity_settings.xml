@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.adalbero.app.hueswtich.common.settings.SettingsActivity$SettingsFragment"
+        android:name="com.adalbero.app.hueswitch.common.settings.SettingsActivity$SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.adalbero.app.hueswtich">
+    package="com.adalbero.app.hueswitch">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,17 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.adalbero.app.hueswitch.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".common.hue.HuePushlinkActivity" />
+        <activity android:name="com.adalbero.app.hueswitch.common.hue.HuePushlinkActivity" />
         <activity
-            android:name=".common.settings.SettingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.adalbero.app.hueswitch.common.settings.SettingsActivity"
+            android:parentActivityName="com.adalbero.app.hueswitch.MainActivity" />
     </application>
 
 </manifest>

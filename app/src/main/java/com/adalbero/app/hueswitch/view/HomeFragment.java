@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.view;
+package com.adalbero.app.hueswitch.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.adalbero.app.hueswtich.R;
-import com.adalbero.app.hueswtich.common.listview.ListItem;
-import com.adalbero.app.hueswtich.controller.AppController;
-import com.adalbero.app.hueswtich.controller.AppListener;
+import com.adalbero.app.hueswitch.R;
+import com.adalbero.app.hueswitch.common.listview.ListItem;
+import com.adalbero.app.hueswitch.controller.AppController;
+import com.adalbero.app.hueswitch.controller.AppListener;
 
 /**
  * Created by Adalbero on 04/04/2017.

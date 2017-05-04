@@ -1,4 +1,4 @@
-package com.adalbero.app.hueswtich.common.hue;
+package com.adalbero.app.hueswitch.common.hue;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.adalbero.app.hueswtich.MainActivity;
-import com.adalbero.app.hueswtich.R;
-import com.adalbero.app.hueswtich.controller.AppController;
+import com.adalbero.app.hueswitch.MainActivity;
+import com.adalbero.app.hueswitch.R;
+import com.adalbero.app.hueswitch.controller.AppController;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
@@ -27,7 +27,7 @@ import java.util.Map;
  * Created by Adalbero on 04/04/2017.
  */
 
-public class HueManager {
+public class HueController {
     private static String TAG = "MyApp";
 
     public static final int DISCONNECTED = 0;
@@ -41,7 +41,7 @@ public class HueManager {
 
     private int mStatus = DISCONNECTED;
 
-    public HueManager(Activity context) {
+    public HueController(Activity context) {
         mContext = context;
 
         // Gets an instance of the Hue SDK.
@@ -115,6 +115,7 @@ public class HueManager {
     }
 
     public void onUpdateCache(List<Integer> list) {
+//        Log.d("MyApp", "HueController.onUpdateCache: ");
     }
 
     public void connect(PHAccessPoint accessPoint) {
@@ -146,7 +147,7 @@ public class HueManager {
 
         state.setOn(on);
 
-        HueManager.getPHBridge().updateLightState(light, state, new HueLightListener() {
+        HueController.getPHBridge().updateLightState(light, state, new HueLightListener() {
             @Override
             public void onStateUpdate(Map<String, String> map, List<PHHueError> list) {
                 AppController.getInstance().notifyDataChanged(false);
@@ -155,7 +156,7 @@ public class HueManager {
     }
 
     public static void setOn(PHGroup group, boolean on) {
-        PHBridge bridge = HueManager.getPHBridge();
+        PHBridge bridge = HueController.getPHBridge();
 
         for (String identifier : group.getLightIdentifiers()) {
             PHLight phLight = bridge.getResourceCache().getLights().get(identifier);
