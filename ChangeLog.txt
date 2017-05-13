@@ -1,3 +1,6 @@
+Ver 1.0.0
+- First Release
+
 Ver 0.6.1
 - [Fix] Pacakge name typo
 
